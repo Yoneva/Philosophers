@@ -6,14 +6,14 @@
 #    By: amsbai <amsbai@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/29 19:36:37 by user              #+#    #+#              #
-#    Updated: 2025/07/28 19:52:42 by amsbai           ###   ########.fr        #
+#    Updated: 2025/07/29 22:54:40 by amsbai           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -pthread -g -fsanitize=address -fsanitize=undefined
-SRC = philo.c utils/ft_atoi.c utils/helpers.c philo_helper.c
+SRC = philo.c routine.c parsing.c utils/ft_atoi.c utils/helpers.c utils/valid_nbr.c
 OBJ = $(SRC:.c=.o)
 HEADER = philo.h
 

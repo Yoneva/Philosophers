@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo_helper.c                                     :+:      :+:    :+:   */
+/*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amsbai <amsbai@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 18:39:23 by user              #+#    #+#             */
-/*   Updated: 2025/07/29 21:31:38 by amsbai           ###   ########.fr       */
+/*   Updated: 2025/07/29 23:08:24 by amsbai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,8 @@ void	eat(t_philo *philo)
 	smart_sleep(philo->time_to_eat, philo);
 	pthread_mutex_lock(&philo->meal_mutex);
 	philo->last_meal_time = current_time_ms();
-	pthread_mutex_unlock(&philo->meal_mutex);	
+	pthread_mutex_unlock(&philo->meal_mutex);
+	philo->meal_eaten++;	
 	pthread_mutex_unlock(&philo->shared_data->fork[philo->left_fork]);
 	pthread_mutex_unlock(&philo->shared_data->fork[philo->right_fork]);
 }

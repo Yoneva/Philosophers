@@ -1,39 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   valid_nbr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amsbai <amsbai@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/25 19:06:09 by amsbai            #+#    #+#             */
-/*   Updated: 2025/07/29 22:44:33 by amsbai           ###   ########.fr       */
+/*   Created: 2025/07/29 22:17:51 by amsbai            #+#    #+#             */
+/*   Updated: 2025/07/29 22:41:37 by amsbai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 
-int	ft_atoi(const char *str)
+int	ft_isdigit(int c)
 {
-	int	sign;
-	int	number;
+	if (c >= 48 && c <= 57)
+	{
+		return (1);
+	}
+	return (0);
+}
+
+int	valid_nbr(const char *tab)
+{
 	int	i;
 
-	sign = 1;
-	number = 0;
 	i = 0;
-	while ((str[i] >= 9 && str[i] <= 13) || str[i] == 32)
+	if (tab[i] == '+' && tab[i + 1] != '\0')
 		i++;
-	if (str[i] == '-' || str[i] == '+')
+	while (tab[i])
 	{
-		if (str[i] == '-')
-			sign *= -1;
+		if (!ft_isdigit(tab[i]))
+		{
+			return (1);
+		}
 		i++;
 	}
-	while (str[i] >= '0' && str[i] <= '9')
-	{
-		number *= 10;
-		number += (str[i] - 48);
-		i++;
-	}
-	return (number * sign);
+	return (0);
 }
+

@@ -6,7 +6,7 @@
 /*   By: amsbai <amsbai@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 19:33:40 by user              #+#    #+#             */
-/*   Updated: 2025/07/29 21:00:54 by amsbai           ###   ########.fr       */
+/*   Updated: 2025/07/29 23:38:30 by amsbai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,13 @@
 # include <unistd.h>
 # include <stdbool.h>
 # include <stdlib.h>
+# include <limits.h>
 # include <pthread.h>
 # include <sys/time.h>
 
 typedef struct s_data
 {
+	int				args_nb;
 	bool			simulation_over;
 	pthread_mutex_t	death_mutex;
 	pthread_mutex_t	print;
@@ -47,13 +49,16 @@ typedef struct s_philo
 
 int			ft_atoi(const char *str);
 void		smart_sleep(long duration, t_philo *philo);
+void		parse_data(t_data	*shared_data, int n_philo, int ac);
+void		init_philos(char **av, t_data *shared_data, t_philo *philo, pthread_t *thread);
 bool		check_status(t_philo *philo);
-void		ms_sleep(int ms);
+void		clean(t_data *shared_data, t_philo *philo, pthread_t *thread);
 void		print(t_philo *philo, char *str);
 long long	elapsed_time_ms(t_data *data);
 long long	current_time_ms(void);
 bool		check_death(t_philo	*philo);
 void		s_leep(t_philo *philo);
 void		eat(t_philo *philo);
+int			valid_nbr(const char *tab);
 
 #endif
