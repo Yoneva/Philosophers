@@ -6,7 +6,7 @@
 /*   By: amsbai <amsbai@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 19:33:40 by user              #+#    #+#             */
-/*   Updated: 2025/07/28 16:48:40 by amsbai           ###   ########.fr       */
+/*   Updated: 2025/07/29 21:00:54 by amsbai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void		ms_sleep(int ms);
 void		print(t_philo *philo, char *str);
 long long	elapsed_time_ms(t_data *data);
 long long	current_time_ms(void);
-bool		check_death(void *arg, int n_philos);
+bool		check_death(t_philo	*philo);
 void		s_leep(t_philo *philo);
 void		eat(t_philo *philo);
 

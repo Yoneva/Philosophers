@@ -6,38 +6,28 @@
 /*   By: amsbai <amsbai@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 18:39:23 by user              #+#    #+#             */
-/*   Updated: 2025/07/28 21:00:42 by amsbai           ###   ########.fr       */
+/*   Updated: 2025/07/29 21:31:38 by amsbai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-bool	check_death(void *arg, int n_philos)
+bool	check_death(t_philo	*philo)
 {
-	int i;
-	t_philo	*philos = (t_philo *)arg;
-	t_data *data = philos[0].shared_data;
-
-	i = 0;
-	while(i < n_philos)
+	pthread_mutex_lock(&philo->meal_mutex);
+	if (current_time_ms() - philo->last_meal_time > philo->time_to_die)
 	{
-		pthread_mutex_lock(&philos[i].meal_mutex);
-		if (current_time_ms() - philos[i].last_meal_time > philos[i].time_to_die)
+		pthread_mutex_lock(&philo->shared_data->death_mutex);
+		if (!philo->shared_data->simulation_over)
 		{
-			pthread_mutex_lock(&data->death_mutex);
-			if (!data->simulation_over)
-			{
-				print(&philos[i], "died");
-				data->simulation_over = true;
-			}
-			pthread_mutex_unlock(&data->death_mutex);
-			pthread_mutex_unlock(&philos[i].meal_mutex);
-			usleep(1000);
-			return (false);
+			print(philo, "died");
+			philo->shared_data->simulation_over = true;
 		}
-		pthread_mutex_unlock(&philos[i].meal_mutex);
-		i++;
+		pthread_mutex_unlock(&philo->shared_data->death_mutex);
+		pthread_mutex_unlock(&philo->meal_mutex);
+		return (false);
 	}
+	pthread_mutex_unlock(&philo->meal_mutex);
 	return (true);
 }
 

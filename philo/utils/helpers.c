@@ -6,7 +6,7 @@
 /*   By: amsbai <amsbai@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 20:52:31 by user              #+#    #+#             */
-/*   Updated: 2025/07/28 20:56:54 by amsbai           ###   ########.fr       */
+/*   Updated: 2025/07/29 21:37:38 by amsbai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,20 +27,10 @@ long long elapsed_time_ms(t_data *data)
 
 void	print(t_philo *philo, char *str)
 {
+	
 	pthread_mutex_lock(&philo->shared_data->print);
-	if (!check_status(philo))
-	{
-		pthread_mutex_unlock(&philo->shared_data->print);
-		return ;
-	}
-	printf("%lld %d %s\n", elapsed_time_ms(philo->shared_data), philo->id,
+	if (philo->shared_data->simulation_over == false)
+		printf("%lld %d %s\n", elapsed_time_ms(philo->shared_data), philo->id,
 		str);
 	pthread_mutex_unlock(&philo->shared_data->print);
-}
-
-void ms_sleep(int ms)
-{
-	long long start = current_time_ms();
-	while (current_time_ms() - start < ms)
-		usleep(500); // sleep in small increments to be more accurate
 }

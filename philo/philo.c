@@ -6,7 +6,7 @@
 /*   By: amsbai <amsbai@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 19:40:48 by user              #+#    #+#             */
-/*   Updated: 2025/07/28 20:52:16 by amsbai           ###   ########.fr       */
+/*   Updated: 2025/07/29 21:31:15 by amsbai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,12 +92,9 @@ int main(int ac, char **av)
 	}
 	while (1)
 	{
-		if (!check_death(philo, id))
-		{
-			usleep(1000);
+		if (!check_death(philo))
 			break;
-		}
-		ms_sleep(1);
+		usleep(42);
 	}
 	n = 0;
 	while(n < id)
