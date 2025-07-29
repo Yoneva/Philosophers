@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_helper.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: amsbai <amsbai@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/14 18:39:23 by user              #+#    #+#             */
-/*   Updated: 2025/07/17 21:30:17 by user             ###   ########.fr       */
+/*   Updated: 2025/07/28 21:00:42 by amsbai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ bool	check_death(void *arg, int n_philos)
 			}
 			pthread_mutex_unlock(&data->death_mutex);
 			pthread_mutex_unlock(&philos[i].meal_mutex);
+			usleep(1000);
 			return (false);
 		}
 		pthread_mutex_unlock(&philos[i].meal_mutex);
@@ -40,23 +41,36 @@ bool	check_death(void *arg, int n_philos)
 	return (true);
 }
 
+void	smart_sleep(long duration, t_philo *philo)
+{
+	long	start;
+	
+	start = current_time_ms();
+	while (check_status(philo))
+	{
+		if (current_time_ms() - start >= duration)
+			break;
+		usleep(1000);
+	}
+}
+
 void	eat(t_philo *philo)
 {
-	pthread_mutex_lock(philo->left_fork);
+	pthread_mutex_lock(&philo->shared_data->fork[philo->left_fork]);
 	print(philo, "has taken a fork");
-	pthread_mutex_lock(philo->right_fork);
+	pthread_mutex_lock(&philo->shared_data->fork[philo->right_fork]);
 	print(philo, "has taken a fork");
+	print(philo, "is eating");
+	smart_sleep(philo->time_to_eat, philo);
 	pthread_mutex_lock(&philo->meal_mutex);
 	philo->last_meal_time = current_time_ms();
-	pthread_mutex_unlock(&philo->meal_mutex);
-	print(philo, "is eating");
-	usleep(philo->time_to_eat * 1000);
-	pthread_mutex_unlock(philo->right_fork);
-	pthread_mutex_unlock(philo->left_fork);
+	pthread_mutex_unlock(&philo->meal_mutex);	
+	pthread_mutex_unlock(&philo->shared_data->fork[philo->left_fork]);
+	pthread_mutex_unlock(&philo->shared_data->fork[philo->right_fork]);
 }
 
 void	s_leep(t_philo *philo)
-{
+{	
 	print(philo, "is sleeping");
-	usleep(philo->time_to_sleep * 1000);
+	smart_sleep(philo->time_to_sleep, philo);
 }

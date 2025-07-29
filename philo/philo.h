@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: amsbai <amsbai@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 19:33:40 by user              #+#    #+#             */
-/*   Updated: 2025/07/17 19:35:26 by user             ###   ########.fr       */
+/*   Updated: 2025/07/28 16:48:40 by amsbai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef struct s_data
 	pthread_mutex_t	print;
 	long long		start_time;
 	int				num_philos;
+	pthread_mutex_t	*fork;
 }	t_data;
 
 typedef struct s_philo
@@ -36,15 +37,17 @@ typedef struct s_philo
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				meals_goal;
+	pthread_mutex_t	meal_mutex;
 	long long		last_meal_time;
 	int				meal_eaten;
-	pthread_mutex_t	*left_fork;
-	pthread_mutex_t	*right_fork;
-	pthread_mutex_t	meal_mutex;
+	int				left_fork;
+	int				right_fork;
 	t_data			*shared_data;
 }	t_philo ;
 
 int			ft_atoi(const char *str);
+void		smart_sleep(long duration, t_philo *philo);
+bool		check_status(t_philo *philo);
 void		ms_sleep(int ms);
 void		print(t_philo *philo, char *str);
 long long	elapsed_time_ms(t_data *data);

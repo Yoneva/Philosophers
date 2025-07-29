@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   helpers.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: amsbai <amsbai@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 20:52:31 by user              #+#    #+#             */
-/*   Updated: 2025/07/17 20:48:20 by user             ###   ########.fr       */
+/*   Updated: 2025/07/28 20:56:54 by amsbai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,11 @@ long long elapsed_time_ms(t_data *data)
 void	print(t_philo *philo, char *str)
 {
 	pthread_mutex_lock(&philo->shared_data->print);
+	if (!check_status(philo))
+	{
+		pthread_mutex_unlock(&philo->shared_data->print);
+		return ;
+	}
 	printf("%lld %d %s\n", elapsed_time_ms(philo->shared_data), philo->id,
 		str);
 	pthread_mutex_unlock(&philo->shared_data->print);

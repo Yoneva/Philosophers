@@ -3,30 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: user <user@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: amsbai <amsbai@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 19:40:48 by user              #+#    #+#             */
-/*   Updated: 2025/07/17 21:50:20 by user             ###   ########.fr       */
+/*   Updated: 2025/07/28 20:52:16 by amsbai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void set_forks(pthread_mutex_t *forks, int id,t_philo *philo)
+void	set_forks(pthread_mutex_t *forks, int id)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < id)
 	{
 		pthread_mutex_init(&forks[i], NULL);
-		i++;
-	}
-	i = 0;
-	while (i < id)
-	{
-		philo[i].left_fork = &forks[i];
-		philo[i].right_fork = &forks[(i + 1) % id];
 		i++;
 	}
 }
@@ -39,19 +32,18 @@ bool	check_status(t_philo *philo)
 		pthread_mutex_unlock(&philo->shared_data->death_mutex);
 		return (false);
 	}
-    pthread_mutex_unlock(&philo->shared_data->death_mutex);
+	pthread_mutex_unlock(&philo->shared_data->death_mutex);
 	return (true);
 }
+
 void	*philo_action(void *arg)
 {
-	t_philo *philo = (t_philo *)arg;
+	t_philo	*philo = (t_philo *)arg;
 
 	if (philo->id % 2 == 0)
-		usleep(42);	
-	while (1)
+		s_leep(philo);
+	while (check_status(philo))
 	{
-		if (!check_status(philo))
-			break;
 		print(philo, "is thinking");
 		eat(philo);
 		s_leep(philo);
@@ -67,16 +59,20 @@ int main(int ac, char **av)
 	if (ac < 5 || ac > 6)
 		return (0);
 	id = ft_atoi(av[1]);
-	pthread_t	thread[id];
-	t_philo		philo[id];
+	pthread_t	*thread;
+	t_philo		*philo;
 	t_data shared_data;
-	pthread_mutex_t forks[id];
 	shared_data.num_philos = id;
 	shared_data.simulation_over = false;
 	shared_data.start_time = current_time_ms();
 	pthread_mutex_init(&shared_data.death_mutex, NULL);
 	pthread_mutex_init(&shared_data.print, NULL);
-	set_forks(forks,id, philo);
+	shared_data.fork = malloc(sizeof(pthread_mutex_t) * id);
+	thread = malloc(sizeof (pthread_t) * id);
+	philo = malloc(sizeof(t_philo) * id);
+	if (!shared_data.fork || !philo || !thread)
+		return 1;
+	set_forks(shared_data.fork, id);
 	n = 0;
 	while (n < id)
 	{
@@ -84,32 +80,37 @@ int main(int ac, char **av)
 		philo[n].time_to_die = ft_atoi(av[2]);
 		philo[n].time_to_eat = ft_atoi(av[3]);
 		philo[n].time_to_sleep = ft_atoi(av[4]);
-		philo[n].last_meal_time = current_time_ms();
+		philo[n].last_meal_time = shared_data.start_time;
 		philo[n].shared_data = &shared_data;
 		pthread_mutex_init(&philo[n].meal_mutex, NULL);
 		if (ac == 6)
 			philo[n].meals_goal = ft_atoi(av[5]);
+		philo[n].left_fork = n;
+		philo[n].right_fork = (n + 1) % id;
 		pthread_create(&thread[n], NULL, philo_action, &philo[n]);
 		n++;
 	}
-	//check philo death state
 	while (1)
 	{
 		if (!check_death(philo, id))
+		{
+			usleep(1000);
 			break;
-		ms_sleep(1000);
-		if (!check_status(philo))
-			break;
+		}
+		ms_sleep(1);
 	}
 	n = 0;
 	while(n < id)
 	{
 		pthread_join(thread[n],NULL);
-		pthread_mutex_destroy(&forks[n]);
+		pthread_mutex_destroy(&shared_data.fork[n]);
 		pthread_mutex_destroy(&philo[n].meal_mutex);
 		n++;
 	}
 	pthread_mutex_destroy(&shared_data.death_mutex);
 	pthread_mutex_destroy(&shared_data.print);
+	free(shared_data.fork);
+	free(philo);
+	free (thread);
 	return (0);
 }

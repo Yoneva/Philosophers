@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: user <user@student.42.fr>                  +#+  +:+       +#+         #
+#    By: amsbai <amsbai@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/29 19:36:37 by user              #+#    #+#              #
-#    Updated: 2025/07/17 21:03:04 by user             ###   ########.fr        #
+#    Updated: 2025/07/28 19:52:42 by amsbai           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -pthread
+CFLAGS = -Wall -Wextra -Werror -pthread -g -fsanitize=address -fsanitize=undefined
 SRC = philo.c utils/ft_atoi.c utils/helpers.c philo_helper.c
 OBJ = $(SRC:.c=.o)
 HEADER = philo.h
