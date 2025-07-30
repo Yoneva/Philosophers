@@ -6,7 +6,7 @@
 /*   By: amsbai <amsbai@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 20:52:31 by user              #+#    #+#             */
-/*   Updated: 2025/07/30 18:07:03 by amsbai           ###   ########.fr       */
+/*   Updated: 2025/07/30 19:49:02 by amsbai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,11 @@ long long	current_time_ms(void)
 
 	gettimeofday(&tv, NULL);
 	return (((tv.tv_sec * 1000) + (tv.tv_usec / 1000)));
+}
+
+long long	elapsed_time_ms(t_data	*data)
+{
+	return (current_time_ms() - data->start_time);
 }
 
 void	print(t_philo *philo, char *str)

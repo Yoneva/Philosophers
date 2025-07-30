@@ -6,7 +6,7 @@
 /*   By: amsbai <amsbai@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 19:40:48 by user              #+#    #+#             */
-/*   Updated: 2025/07/30 18:04:47 by amsbai           ###   ########.fr       */
+/*   Updated: 2025/07/30 19:51:06 by amsbai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,10 @@ bool	check_status(t_philo *philo)
 	return (true);
 }
 
+// void	l(void)
+// {
+// 	system("leaks philo");
+// }
 int	main(int ac, char **av)
 {
 	int			n_philos;
@@ -65,7 +69,7 @@ int	main(int ac, char **av)
 	pthread_t	*thread;
 	t_philo		*philo;
 	t_data		shared_data;
-
+	// atexit(l);
 	if (ac != 5 && ac != 6)
 		return (0);
 	i = 0;
