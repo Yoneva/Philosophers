@@ -6,7 +6,7 @@
 /*   By: amsbai <amsbai@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/29 22:17:51 by amsbai            #+#    #+#             */
-/*   Updated: 2025/07/29 22:41:37 by amsbai           ###   ########.fr       */
+/*   Updated: 2025/07/30 18:07:44 by amsbai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,3 +39,16 @@ int	valid_nbr(const char *tab)
 	return (0);
 }
 
+bool	check_if_0(t_data *shared_data, int i)
+{
+	if (i == -1)
+	{
+		if (shared_data->num_philos == 0 || shared_data->time_to_die == 0
+			|| shared_data->time_to_sleep == 0 || shared_data->time_to_eat == 0)
+		{
+			printf("Error !! unvalide numberr\n");
+			return (true);
+		}
+	}
+	return (false);
+}

@@ -6,7 +6,7 @@
 /*   By: amsbai <amsbai@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/29 19:33:40 by user              #+#    #+#             */
-/*   Updated: 2025/07/29 23:38:30 by amsbai           ###   ########.fr       */
+/*   Updated: 2025/07/30 18:05:13 by amsbai           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,28 +29,30 @@ typedef struct s_data
 	pthread_mutex_t	print;
 	long long		start_time;
 	int				num_philos;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				meals_goal;
 	pthread_mutex_t	*fork;
 }	t_data;
 
 typedef struct s_philo
 {
 	int				id;
-	int				time_to_die;
-	int				time_to_eat;
-	int				time_to_sleep;
-	int				meals_goal;
 	pthread_mutex_t	meal_mutex;
 	long long		last_meal_time;
 	int				meal_eaten;
 	int				left_fork;
 	int				right_fork;
 	t_data			*shared_data;
-}	t_philo ;
+}	t_philo;
 
 int			ft_atoi(const char *str);
+bool		check_if_0(t_data *shared_data, int i);
+bool		done_eating(t_philo	*philo);
 void		smart_sleep(long duration, t_philo *philo);
-void		parse_data(t_data	*shared_data, int n_philo, int ac);
-void		init_philos(char **av, t_data *shared_data, t_philo *philo, pthread_t *thread);
+int			parse_data(t_data	*shared_data, int n_philo, int ac, char **av);
+void		init_philos(t_data *shared_data, t_philo *philo, pthread_t *thread);
 bool		check_status(t_philo *philo);
 void		clean(t_data *shared_data, t_philo *philo, pthread_t *thread);
 void		print(t_philo *philo, char *str);
